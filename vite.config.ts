@@ -11,8 +11,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['icons/icon-192.svg', 'icons/icon-512.svg', 'favicon.svg'],
       manifest: {
-        name: 'TableTop',
-        short_name: 'TableTop',
+        name: 'PlayFlow',
+        short_name: 'PlayFlow',
         description: 'Offline board game companion for players',
         theme_color: '#2563eb',
         background_color: '#ffffff',

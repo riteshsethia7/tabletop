@@ -6,7 +6,7 @@ export function Header() {
     <header className="sticky top-0 z-50 bg-surface border-b border-border">
       <div className="container mx-auto px-4 h-14 flex items-center justify-between">
         <Link to="/" className="text-xl font-bold text-primary">
-          TableTop
+          PlayFlow
         </Link>
         <Link
           to="/settings"

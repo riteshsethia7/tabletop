@@ -1,6 +1,6 @@
 {
-  "name": "TableTop - Board Game Companion",
-  "short_name": "TableTop",
+  "name": "PlayFlow - Board Game Companion",
+  "short_name": "PlayFlow",
   "description": "Offline mobile companion app for board game players",
   "start_url": "/",
   "display": "standalone",

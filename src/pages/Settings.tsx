@@ -159,7 +159,7 @@ export function Settings() {
           <div className="space-y-3 text-sm">
             <div className="flex justify-between">
               <span className="text-text-secondary">App Name</span>
-              <span className="font-medium">TableTop</span>
+              <span className="font-medium">PlayFlow</span>
             </div>
             <div className="flex justify-between">
               <span className="text-text-secondary">Version</span>

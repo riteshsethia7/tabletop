@@ -1,13 +1,13 @@
 import Dexie, { Table } from 'dexie';
 import type { Game, TimerState, Arena } from '../types';
 
-export class TableTopDB extends Dexie {
+export class PlayFlowDB extends Dexie {
   games!: Table<Game, string>;
   timers!: Table<TimerState, string>;
   arenas!: Table<Arena, string>;
 
   constructor() {
-    super('TableTopDB');
+    super('PlayFlowDB');
 
     this.version(1).stores({
       games: 'id, createdAt, updatedAt',
@@ -17,7 +17,7 @@ export class TableTopDB extends Dexie {
   }
 }
 
-export const db = new TableTopDB();
+export const db = new PlayFlowDB();
 
 // Helper functions for games
 export async function saveGame(game: Game): Promise<string> {
