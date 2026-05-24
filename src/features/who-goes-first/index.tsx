@@ -1,0 +1,1 @@
+export { WhoGoesFirst } from './WhoGoesFirstComponent';

@@ -1,0 +1,201 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* CSS Variables for Theming */
+:root {
+  /* Light Mode Colors */
+  --color-primary: #2563eb;
+  --color-background: #ffffff;
+  --color-surface: #f8fafc;
+  --color-text: #111827;
+  --color-text-secondary: #6b7280;
+  --color-border: #e5e7eb;
+}
+
+/* Dark Mode */
+.dark {
+  --color-background: #121212;
+  --color-surface: #1e1e1e;
+  --color-text: #ffffff;
+  --color-text-secondary: #9ca3af;
+  --color-border: #374151;
+}
+
+/* Accent Color Variations */
+[data-accent="blue"] {
+  --color-primary: #2563eb;
+}
+
+[data-accent="green"] {
+  --color-primary: #10b981;
+}
+
+[data-accent="orange"] {
+  --color-primary: #f97316;
+}
+
+[data-accent="purple"] {
+  --color-primary: #a855f7;
+}
+
+[data-accent="red"] {
+  --color-primary: #ef4444;
+}
+
+[data-accent="teal"] {
+  --color-primary: #14b8a6;
+}
+
+[data-accent="amber"] {
+  --color-primary: #f59e0b;
+}
+
+/* Base Styles */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  height: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--color-background);
+  color: var(--color-text);
+  overflow-x: hidden;
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Allow text selection in input elements */
+input,
+textarea,
+[contenteditable] {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-surface);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-secondary);
+}
+
+/* Custom Range Input Styling */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+/* Webkit (Chrome, Safari, Edge) - Track */
+input[type="range"]::-webkit-slider-track {
+  background: var(--color-surface);
+  height: 0.5rem;
+  border-radius: 0.5rem;
+}
+
+/* Webkit - Thumb */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background: var(--color-primary);
+  cursor: pointer;
+  margin-top: -0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Webkit - Filled track (before thumb) */
+input[type="range"]::-webkit-slider-runnable-track {
+  background: linear-gradient(
+    to right,
+    var(--color-primary) 0%,
+    var(--color-primary) var(--range-progress, 0%),
+    var(--color-surface) var(--range-progress, 0%),
+    var(--color-surface) 100%
+  );
+  height: 0.5rem;
+  border-radius: 0.5rem;
+}
+
+/* Firefox - Track */
+input[type="range"]::-moz-range-track {
+  background: var(--color-surface);
+  height: 0.5rem;
+  border-radius: 0.5rem;
+}
+
+/* Firefox - Thumb */
+input[type="range"]::-moz-range-thumb {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background: var(--color-primary);
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Firefox - Filled progress */
+input[type="range"]::-moz-range-progress {
+  background: var(--color-primary);
+  height: 0.5rem;
+  border-radius: 0.5rem 0 0 0.5rem;
+}
+
+/* Focus state */
+input[type="range"]:focus {
+  outline: none;
+}
+
+input[type="range"]:focus::-webkit-slider-thumb {
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
+}
+
+input[type="range"]:focus::-moz-range-thumb {
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
+}
