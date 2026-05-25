@@ -1,5 +1,6 @@
+import { useNavigate } from 'react-router-dom';
 import { useSettingsStore } from '../stores/settingsStore';
-import { Smartphone, Palette, Vibrate, Volume2, Zap, Eye, Info } from 'lucide-react';
+import { Smartphone, Palette, Vibrate, Volume2, Zap, Eye, Info, ArrowLeft } from 'lucide-react';
 import type { Theme, AccentColor } from '../types';
 
 const ACCENT_COLORS: { value: AccentColor; label: string; color: string }[] = [
@@ -13,6 +14,7 @@ const ACCENT_COLORS: { value: AccentColor; label: string; color: string }[] = [
 ];
 
 export function Settings() {
+  const navigate = useNavigate();
   const {
     theme,
     accentColor,
@@ -30,7 +32,16 @@ export function Settings() {
 
   return (
     <div className="container mx-auto px-4 py-6 pb-24">
-      <h1 className="text-3xl font-bold mb-6">Settings</h1>
+      <div className="flex items-center gap-3 mb-6">
+        <button
+          onClick={() => navigate(-1)}
+          className="p-2 rounded-lg hover:bg-surface transition-colors"
+          aria-label="Go back"
+        >
+          <ArrowLeft className="w-6 h-6" />
+        </button>
+        <h1 className="text-3xl font-bold">Settings</h1>
+      </div>
 
       <div className="max-w-2xl mx-auto space-y-6">
         {/* Appearance */}
