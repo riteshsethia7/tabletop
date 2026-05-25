@@ -11,6 +11,9 @@ import {
   ArrowDownUp,
   Gauge,
   Download,
+  Share,
+  X,
+  MoreVertical,
 } from 'lucide-react';
 
 const features = [
@@ -28,32 +31,83 @@ const features = [
 export function Home() {
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [showInstallButton, setShowInstallButton] = useState(false);
+  const [isStandalone, setIsStandalone] = useState(false);
+  const [showSafariInstructions, setShowSafariInstructions] = useState(false);
+  const [showAndroidInstructions, setShowAndroidInstructions] = useState(false);
+
+  // Check if device is iOS or Android
+  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  const isChromeIOS = isIOS && /crios/i.test(navigator.userAgent);
+  const isAndroid = /android/i.test(navigator.userAgent);
 
   useEffect(() => {
+    // Check if already installed/running as PWA
+    const isInstalled = window.matchMedia('(display-mode: standalone)').matches ||
+      (window.navigator as any).standalone === true;
+    setIsStandalone(isInstalled);
+
+    console.log('[PWA] Install status check:', {
+      isInstalled,
+      protocol: window.location.protocol,
+      isSecure: window.location.protocol === 'https:' || window.location.hostname === 'localhost',
+      userAgent: navigator.userAgent,
+      serviceWorker: 'serviceWorker' in navigator,
+      displayMode: window.matchMedia('(display-mode: standalone)').matches
+    });
+
     const handler = (e: Event) => {
+      console.log('[PWA] ✅ beforeinstallprompt event fired! Install prompt available.');
       e.preventDefault();
       setDeferredPrompt(e);
       setShowInstallButton(true);
+      // Cache for later use
+      (window as any).deferredPrompt = e;
     };
 
     window.addEventListener('beforeinstallprompt', handler);
 
+    // Check if event was already fired before component mounted
+    if ((window as any).deferredPrompt) {
+      console.log('[PWA] Using cached deferred prompt');
+      setDeferredPrompt((window as any).deferredPrompt);
+      setShowInstallButton(true);
+    }
+
+    // Log if event doesn't fire after 5 seconds
+    const timeout = setTimeout(() => {
+      if (!deferredPrompt) {
+        console.log('[PWA] ⚠️  beforeinstallprompt event did not fire. Requirements:', {
+          'HTTPS or localhost': window.location.protocol === 'https:' || window.location.hostname === 'localhost',
+          'Valid manifest': 'Check browser DevTools',
+          'Service Worker': 'serviceWorker' in navigator,
+          'Not already installed': !isInstalled
+        });
+      }
+    }, 5000);
+
     return () => {
       window.removeEventListener('beforeinstallprompt', handler);
+      clearTimeout(timeout);
     };
   }, []);
 
   const handleInstallClick = async () => {
-    if (!deferredPrompt) return;
+    if (deferredPrompt) {
+      // Automatic install available
+      console.log('[PWA] Showing install prompt');
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
 
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
+      console.log('[PWA] User choice:', outcome);
+      if (outcome === 'accepted') {
+        setShowInstallButton(false);
+      }
 
-    if (outcome === 'accepted') {
-      setShowInstallButton(false);
+      setDeferredPrompt(null);
+    } else if (isAndroid) {
+      // Fallback for Android - show manual instructions
+      setShowAndroidInstructions(true);
     }
-
-    setDeferredPrompt(null);
   };
 
   return (
@@ -63,14 +117,37 @@ export function Home() {
         <p className="text-text-secondary">
           Your offline board game companion. Choose a feature to get started!
         </p>
-        {showInstallButton && (
-          <button
-            onClick={handleInstallClick}
-            className="mt-3 inline-flex items-center gap-2 text-primary hover:underline text-sm font-medium"
-          >
+        {isStandalone ? (
+          <p className="mt-3 inline-flex items-center gap-2 text-green-600 text-sm font-medium">
             <Download className="w-4 h-4" />
-            Add PlayFlow to home screen
-          </button>
+            App is installed!
+          </p>
+        ) : (
+          <div className="mt-3 space-y-2">
+            {(showInstallButton || isAndroid) && !isIOS && (
+              <button
+                onClick={handleInstallClick}
+                className="inline-flex items-center gap-2 text-primary hover:underline text-sm font-medium"
+              >
+                <Download className="w-4 h-4" />
+                Add PlayFlow to home screen
+              </button>
+            )}
+            {isIOS && (
+              <button
+                onClick={() => setShowSafariInstructions(true)}
+                className="inline-flex items-center gap-2 text-primary hover:underline text-sm font-medium"
+              >
+                <Share className="w-4 h-4" />
+                How to install on iPhone (use Safari)
+              </button>
+            )}
+            {isChromeIOS && (
+              <p className="text-xs text-text-secondary">
+                Note: Chrome on iOS doesn't support app installation. Please open this page in Safari.
+              </p>
+            )}
+          </div>
         )}
       </div>
 
@@ -88,6 +165,128 @@ export function Home() {
           </Link>
         ))}
       </div>
+
+      {/* Safari Install Instructions Modal */}
+      {showSafariInstructions && (
+        <div
+          className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50"
+          onClick={() => setShowSafariInstructions(false)}
+        >
+          <div
+            className="bg-surface rounded-xl max-w-md w-full p-6 border-2 border-border"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-bold">Install on Safari</h2>
+              <button
+                onClick={() => setShowSafariInstructions(false)}
+                className="p-2 hover:bg-background rounded-lg transition-colors"
+                aria-label="Close"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="space-y-4 text-sm">
+              <div className="flex gap-3">
+                <div className="flex-shrink-0 w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center font-bold text-xs">
+                  1
+                </div>
+                <p>Tap the <Share className="w-4 h-4 inline" /> <strong>Share</strong> button at the bottom of Safari</p>
+              </div>
+
+              <div className="flex gap-3">
+                <div className="flex-shrink-0 w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center font-bold text-xs">
+                  2
+                </div>
+                <p>Scroll down in the share menu</p>
+              </div>
+
+              <div className="flex gap-3">
+                <div className="flex-shrink-0 w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center font-bold text-xs">
+                  3
+                </div>
+                <p>Tap <strong>"Add to Home Screen"</strong></p>
+              </div>
+
+              <div className="flex gap-3">
+                <div className="flex-shrink-0 w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center font-bold text-xs">
+                  4
+                </div>
+                <p>Tap <strong>"Add"</strong> to confirm</p>
+              </div>
+            </div>
+
+            <button
+              onClick={() => setShowSafariInstructions(false)}
+              className="w-full mt-6 bg-primary text-white py-3 px-6 rounded-lg font-medium hover:opacity-90 active:scale-95 transition-all"
+            >
+              Got it!
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Android Install Instructions Modal */}
+      {showAndroidInstructions && (
+        <div
+          className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50"
+          onClick={() => setShowAndroidInstructions(false)}
+        >
+          <div
+            className="bg-surface rounded-xl max-w-md w-full p-6 border-2 border-border"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-bold">Install on Android</h2>
+              <button
+                onClick={() => setShowAndroidInstructions(false)}
+                className="p-2 hover:bg-background rounded-lg transition-colors"
+                aria-label="Close"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="space-y-4 text-sm">
+              <div className="flex gap-3">
+                <div className="flex-shrink-0 w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center font-bold text-xs">
+                  1
+                </div>
+                <p>Open Chrome browser on your Android device</p>
+              </div>
+
+              <div className="flex gap-3">
+                <div className="flex-shrink-0 w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center font-bold text-xs">
+                  2
+                </div>
+                <p>Tap the <MoreVertical className="w-4 h-4 inline" /> <strong>menu</strong> icon (three dots) in the top right</p>
+              </div>
+
+              <div className="flex gap-3">
+                <div className="flex-shrink-0 w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center font-bold text-xs">
+                  3
+                </div>
+                <p>Tap <strong>"Add to Home screen"</strong> or <strong>"Install app"</strong></p>
+              </div>
+
+              <div className="flex gap-3">
+                <div className="flex-shrink-0 w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center font-bold text-xs">
+                  4
+                </div>
+                <p>Tap <strong>"Add"</strong> or <strong>"Install"</strong> to confirm</p>
+              </div>
+            </div>
+
+            <button
+              onClick={() => setShowAndroidInstructions(false)}
+              className="w-full mt-6 bg-primary text-white py-3 px-6 rounded-lg font-medium hover:opacity-90 active:scale-95 transition-all"
+            >
+              Got it!
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
