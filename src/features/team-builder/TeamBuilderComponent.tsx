@@ -141,7 +141,8 @@ export function TeamBuilder() {
                 }}
                 className="w-full py-6 px-6 rounded-xl font-bold text-lg bg-primary text-white shadow-lg hover:opacity-90 active:scale-95 transition-all"
               >
-                More than 5 Players
+                <div>More than 5 Players</div>
+                <div className="text-xs font-normal mt-1 opacity-90">iOS will collect in 2 rounds</div>
               </button>
 
               <div className="mt-4 text-center text-sm text-text-secondary">
