@@ -91,21 +91,50 @@ function WhoGoesFirstIOS() {
 
           <div className="max-w-md mx-auto space-y-6">
             <div>
-              <label className="block text-sm font-medium mb-3">
-                Number of Players: {playerCount}
+              <label className="block text-sm font-medium mb-3 text-center">
+                Number of Players
               </label>
-              <input
-                type="range"
-                min="2"
-                max="10"
-                value={playerCount}
-                onChange={(e) => setPlayerCount(parseInt(e.target.value))}
-                style={getRangeStyle(playerCount, 2, 10)}
-                className="w-full h-2 bg-surface rounded-lg appearance-none cursor-pointer"
-              />
-              <div className="flex justify-between text-xs text-text-secondary mt-1">
-                <span>2</span>
-                <span>10</span>
+              <div className="grid grid-cols-2 gap-4 mb-4">
+                <button
+                  onClick={() => setPlayerCount(5)}
+                  className={`py-6 px-4 rounded-xl font-bold text-lg transition-all ${
+                    playerCount <= 5
+                      ? 'bg-primary text-white shadow-lg'
+                      : 'bg-surface border-2 border-border hover:border-primary'
+                  }`}
+                >
+                  Up to 5 Players
+                </button>
+                <button
+                  onClick={() => setPlayerCount(6)}
+                  className={`py-6 px-4 rounded-xl font-bold text-lg transition-all ${
+                    playerCount > 5
+                      ? 'bg-primary text-white shadow-lg'
+                      : 'bg-surface border-2 border-border hover:border-primary'
+                  }`}
+                >
+                  More than 5 Players
+                </button>
+              </div>
+
+              {/* Show specific number selection */}
+              <div className="grid grid-cols-5 gap-2">
+                {Array.from({ length: playerCount <= 5 ? 4 : 5 }, (_, i) => {
+                  const num = playerCount <= 5 ? i + 2 : i + 6;
+                  return (
+                    <button
+                      key={num}
+                      onClick={() => setPlayerCount(num)}
+                      className={`py-3 rounded-lg font-bold transition-all ${
+                        playerCount === num
+                          ? 'bg-primary text-white shadow-lg scale-105'
+                          : 'bg-surface border border-border hover:border-primary'
+                      }`}
+                    >
+                      {num}
+                    </button>
+                  );
+                })}
               </div>
             </div>
 

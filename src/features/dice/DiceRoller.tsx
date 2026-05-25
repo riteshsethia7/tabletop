@@ -52,7 +52,7 @@ export function Dice() {
           disabled={isRolling}
           className="w-full bg-primary text-white py-6 px-8 rounded-xl font-bold text-xl shadow-lg hover:opacity-90 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isRolling ? 'Rolling...' : `Roll ${count}${selectedDice}`}
+          {isRolling ? 'Rolling...' : 'Roll'}
         </button>
 
         {/* Results Display */}
