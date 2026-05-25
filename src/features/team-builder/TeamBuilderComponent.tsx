@@ -123,80 +123,32 @@ export function TeamBuilder() {
               <label className="block text-sm font-medium mb-3 text-center">
                 Number of Players
               </label>
-              <div className="grid grid-cols-2 gap-4 mb-4">
-                <button
-                  onClick={() => setPlayerCount(5)}
-                  className={`py-6 px-4 rounded-xl font-bold text-lg transition-all ${
-                    playerCount <= 5
-                      ? 'bg-primary text-white shadow-lg'
-                      : 'bg-surface border-2 border-border hover:border-primary'
-                  }`}
-                >
-                  Up to 5 Players
-                </button>
-                <button
-                  onClick={() => setPlayerCount(6)}
-                  className={`py-6 px-4 rounded-xl font-bold text-lg transition-all ${
-                    playerCount > 5
-                      ? 'bg-primary text-white shadow-lg'
-                      : 'bg-surface border-2 border-border hover:border-primary'
-                  }`}
-                >
-                  More than 5 Players
-                </button>
-              </div>
 
-              {/* Show specific number selection */}
-              <div className="grid grid-cols-5 gap-2">
-                {Array.from({ length: playerCount <= 5 ? 4 : 5 }, (_, i) => {
-                  const num = playerCount <= 5 ? i + 2 : i + 6;
-                  return (
-                    <button
-                      key={num}
-                      onClick={() => setPlayerCount(num)}
-                      className={`py-3 rounded-lg font-bold transition-all ${
-                        playerCount === num
-                          ? 'bg-primary text-white shadow-lg scale-105'
-                          : 'bg-surface border border-border hover:border-primary'
-                      }`}
-                    >
-                      {num}
-                    </button>
-                  );
-                })}
+              <button
+                onClick={() => {
+                  setPlayerCount(5);
+                  startCollection();
+                }}
+                className="w-full py-6 px-6 rounded-xl font-bold text-lg bg-primary text-white shadow-lg hover:opacity-90 active:scale-95 transition-all mb-3"
+              >
+                Up to 5 Players
+              </button>
+
+              <button
+                onClick={() => {
+                  setPlayerCount(10);
+                  startCollection();
+                }}
+                className="w-full py-6 px-6 rounded-xl font-bold text-lg bg-primary text-white shadow-lg hover:opacity-90 active:scale-95 transition-all"
+              >
+                More than 5 Players
+              </button>
+
+              <div className="mt-4 text-center text-sm text-text-secondary">
+                <p>Place all fingers on screen at once</p>
+                <p className="mt-1">iOS will collect in 2 rounds if needed</p>
               </div>
             </div>
-
-            {/* iOS Multi-Round Info */}
-            {playerCount > IOS_MAX_TOUCHES && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                className="bg-surface border-2 border-primary rounded-xl p-4"
-              >
-                <p className="text-sm text-center mb-2">
-                  <span className="font-bold text-primary">iOS Smart Mode 📱</span>
-                </p>
-                <p className="text-xs text-text-secondary text-center">
-                  iOS allows max 5 fingers at once. We'll collect in 2 rounds:
-                </p>
-                <div className="mt-3 space-y-1 text-xs">
-                  <p className="text-center">
-                    <span className="font-medium">Round 1:</span> First {round1Count} players
-                  </p>
-                  <p className="text-center">
-                    <span className="font-medium">Round 2:</span> Remaining {round2Count} players
-                  </p>
-                </div>
-              </motion.div>
-            )}
-
-            <button
-              onClick={startCollection}
-              className="w-full bg-primary text-white py-4 px-6 rounded-xl font-bold text-lg hover:opacity-90 active:scale-95 transition-all"
-            >
-              Place Fingers
-            </button>
           </div>
         </div>
       </div>
