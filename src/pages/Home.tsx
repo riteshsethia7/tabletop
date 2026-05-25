@@ -27,7 +27,7 @@ export function Home() {
   return (
     <div className="container mx-auto px-4 py-6">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">Welcome to TableTop</h1>
+        <h1 className="text-3xl font-bold mb-2">Welcome to PlayFlow</h1>
         <p className="text-text-secondary">
           Your offline board game companion. Choose a feature to get started!
         </p>

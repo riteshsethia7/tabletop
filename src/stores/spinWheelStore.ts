@@ -97,7 +97,7 @@ export const useSpinWheelStore = create<SpinWheelState>()(
       },
     }),
     {
-      name: 'tabletop-spin-wheel',
+      name: 'playflow-spin-wheel',
       version: 1,
       partialize: (state) => ({
         presets: state.presets,

@@ -36,7 +36,7 @@ export const useSettingsStore = create<SettingsState>()(
       resetSettings: () => set(defaultSettings),
     }),
     {
-      name: 'tabletop-settings', // localStorage key
+      name: 'playflow-settings', // localStorage key
       version: 1,
     }
   )

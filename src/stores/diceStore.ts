@@ -80,7 +80,7 @@ export const useDiceStore = create<DiceState>()(
       clearHistory: () => set({ history: [] }),
     }),
     {
-      name: 'tabletop-dice',
+      name: 'playflow-dice',
       version: 1,
       partialize: (state) => ({
         selectedDice: state.selectedDice,
