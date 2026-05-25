@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useSettingsStore } from '../stores/settingsStore';
-import { Smartphone, Palette, Vibrate, Volume2, Zap, Eye, Info, ArrowLeft } from 'lucide-react';
+import { Smartphone, Palette, Zap, Eye, Info, ArrowLeft } from 'lucide-react';
 import type { Theme, AccentColor } from '../types';
 
 const ACCENT_COLORS: { value: AccentColor; label: string; color: string }[] = [
@@ -18,14 +18,10 @@ export function Settings() {
   const {
     theme,
     accentColor,
-    haptics,
-    sound,
     reducedMotion,
     keepAwake,
     setTheme,
     setAccentColor,
-    setHaptics,
-    setSound,
     setReducedMotion,
     setKeepAwake,
   } = useSettingsStore();
@@ -112,32 +108,6 @@ export function Settings() {
               description="Minimize animations and transitions"
               checked={reducedMotion}
               onChange={setReducedMotion}
-            />
-          </div>
-        </section>
-
-        {/* Feedback */}
-        <section className="bg-surface border-2 border-border rounded-xl p-6">
-          <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-            <Vibrate className="w-5 h-5" />
-            Feedback
-          </h2>
-
-          <div className="space-y-4">
-            <SettingToggle
-              icon={<Vibrate className="w-5 h-5" />}
-              label="Haptic Feedback"
-              description="Vibrate on interactions"
-              checked={haptics}
-              onChange={setHaptics}
-            />
-
-            <SettingToggle
-              icon={<Volume2 className="w-5 h-5" />}
-              label="Sound Effects"
-              description="Play sounds for events"
-              checked={sound}
-              onChange={setSound}
             />
           </div>
         </section>
