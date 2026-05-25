@@ -87,8 +87,8 @@ export function TeamBuilder() {
     ? [...round1Touches, ...activeDetection.touches]
     : activeDetection.touches;
 
-  // Setup View (iOS only)
-  if (view === 'setup' && deviceIsIOS) {
+  // Setup View
+  if (view === 'setup') {
     return (
       <div className="relative w-full min-h-[calc(100vh-8rem)] overflow-hidden bg-background pb-24">
         <div className="container mx-auto px-4 py-6">
@@ -117,33 +117,45 @@ export function TeamBuilder() {
               </div>
             </div>
 
-            {/* Number of Players */}
-            <div>
-              <label className="block text-sm font-medium mb-3 text-center">
-                Number of Players
-              </label>
+            {/* Number of Players - iOS only */}
+            {deviceIsIOS ? (
+              <div>
+                <label className="block text-sm font-medium mb-3 text-center">
+                  Number of Players
+                </label>
 
+                <button
+                  onClick={() => {
+                    setPlayerCount(5);
+                    startCollection();
+                  }}
+                  className="w-full py-6 px-6 rounded-xl font-bold text-lg bg-primary text-white shadow-lg hover:opacity-90 active:scale-95 transition-all mb-3"
+                >
+                  Up to 5 Players
+                </button>
+
+                <button
+                  onClick={() => {
+                    setPlayerCount(10);
+                    startCollection();
+                  }}
+                  className="w-full py-6 px-6 rounded-xl font-bold text-lg bg-primary text-white shadow-lg hover:opacity-90 active:scale-95 transition-all"
+                >
+                  <div>More than 5 Players</div>
+                  <div className="text-xs font-normal mt-1 opacity-90">iOS will collect in 2 rounds</div>
+                </button>
+              </div>
+            ) : (
               <button
                 onClick={() => {
-                  setPlayerCount(5);
-                  startCollection();
-                }}
-                className="w-full py-6 px-6 rounded-xl font-bold text-lg bg-primary text-white shadow-lg hover:opacity-90 active:scale-95 transition-all mb-3"
-              >
-                Up to 5 Players
-              </button>
-
-              <button
-                onClick={() => {
-                  setPlayerCount(10);
+                  setPlayerCount(10); // Android can handle 10 touches easily
                   startCollection();
                 }}
                 className="w-full py-6 px-6 rounded-xl font-bold text-lg bg-primary text-white shadow-lg hover:opacity-90 active:scale-95 transition-all"
               >
-                <div>More than 5 Players</div>
-                <div className="text-xs font-normal mt-1 opacity-90">iOS will collect in 2 rounds</div>
+                Start
               </button>
-            </div>
+            )}
           </div>
         </div>
       </div>
@@ -152,7 +164,7 @@ export function TeamBuilder() {
 
   // Collection View
   return (
-    <div className="relative w-full min-h-[calc(100vh-8rem)] overflow-hidden bg-background pb-24">
+    <div className="relative w-full h-[calc(100vh-8rem)] overflow-hidden bg-background">
       {/* Status Messages */}
       <div className="absolute top-6 left-0 right-0 text-center z-30 pointer-events-none">
         <AnimatePresence mode="wait">

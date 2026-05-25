@@ -56,6 +56,7 @@ export interface Game {
   name: string;
   players: Player[];
   rounds: Round[];
+  lowestScoreWins?: boolean;
   createdAt: number;
   updatedAt: number;
 }

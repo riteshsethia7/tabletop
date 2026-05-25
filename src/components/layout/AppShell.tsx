@@ -28,7 +28,7 @@ export function AppShell({ children }: AppShellProps) {
       {!hideSettingsButton && (
         <Link
           to="/settings"
-          className="fixed bottom-[140px] right-6 p-4 bg-primary text-white rounded-full shadow-lg hover:opacity-90 active:scale-95 transition-all z-50"
+          className="fixed top-4 right-4 p-3 bg-primary text-white rounded-full shadow-lg hover:opacity-90 active:scale-95 transition-all z-50"
           aria-label="Settings"
         >
           <Settings className="w-6 h-6" />

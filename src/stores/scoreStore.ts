@@ -7,7 +7,7 @@ interface ScoreState {
   games: Game[];
   isLoading: boolean;
 
-  createGame: (name: string, playerNames: string[]) => Promise<void>;
+  createGame: (name: string, playerNames: string[], lowestScoreWins?: boolean) => Promise<void>;
   loadGame: (id: string) => Promise<void>;
   addPlayer: (name: string) => Promise<void>;
   removePlayer: (playerId: string) => Promise<void>;
@@ -24,7 +24,7 @@ export const useScoreStore = create<ScoreState>((set, get) => ({
   games: [],
   isLoading: false,
 
-  createGame: async (name, playerNames) => {
+  createGame: async (name, playerNames, lowestScoreWins = false) => {
     const players: Player[] = playerNames.map((playerName, index) => ({
       id: `player-${index}-${Date.now()}`,
       name: playerName,
@@ -35,6 +35,7 @@ export const useScoreStore = create<ScoreState>((set, get) => ({
       name,
       players,
       rounds: [],
+      lowestScoreWins,
       createdAt: Date.now(),
       updatedAt: Date.now(),
     };
@@ -185,7 +186,10 @@ export function calculateTotals(game: Game): { playerId: string; total: number }
 // Get winner(s) - can be multiple in case of tie
 export function getWinners(game: Game): Player[] {
   const totals = calculateTotals(game);
-  const maxScore = Math.max(...totals.map((t) => t.total));
-  const winnerIds = totals.filter((t) => t.total === maxScore).map((t) => t.playerId);
+  if (totals.length === 0) return [];
+  const winningScore = game.lowestScoreWins
+    ? Math.min(...totals.map((t) => t.total))
+    : Math.max(...totals.map((t) => t.total));
+  const winnerIds = totals.filter((t) => t.total === winningScore).map((t) => t.playerId);
   return game.players.filter((p) => winnerIds.includes(p.id));
 }

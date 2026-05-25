@@ -20,7 +20,7 @@ export function AdBanner() {
 
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-background border-t border-border z-40">
-      <div className="max-w-screen-lg mx-auto" style={{ height: '100px', overflow: 'hidden' }}>
+      <div className="max-w-screen-lg mx-auto" style={{ height: '80px', overflow: 'hidden' }}>
         <ins
           ref={adRef}
           className="adsbygoogle"

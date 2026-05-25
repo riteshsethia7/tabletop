@@ -84,8 +84,8 @@ export function TurnOrder() {
     ? [...round1Touches, ...activeDetection.touches]
     : activeDetection.touches;
 
-  // Setup View (iOS only)
-  if (view === 'setup' && deviceIsIOS) {
+  // Setup View
+  if (view === 'setup') {
     return (
       <div className="relative w-full min-h-[calc(100vh-8rem)] overflow-hidden bg-background pb-24">
         <div className="container mx-auto px-4 py-6">
@@ -96,26 +96,40 @@ export function TurnOrder() {
               Choose your group size
             </p>
 
-            <button
-              onClick={() => {
-                setPlayerCount(5);
-                startCollection();
-              }}
-              className="w-full py-8 px-6 rounded-xl font-bold text-xl bg-primary text-white shadow-lg hover:opacity-90 active:scale-95 transition-all"
-            >
-              Up to 5 Players
-            </button>
+            {deviceIsIOS ? (
+              <>
+                <button
+                  onClick={() => {
+                    setPlayerCount(5);
+                    startCollection();
+                  }}
+                  className="w-full py-8 px-6 rounded-xl font-bold text-xl bg-primary text-white shadow-lg hover:opacity-90 active:scale-95 transition-all"
+                >
+                  Up to 5 Players
+                </button>
 
-            <button
-              onClick={() => {
-                setPlayerCount(10);
-                startCollection();
-              }}
-              className="w-full py-8 px-6 rounded-xl font-bold text-xl bg-primary text-white shadow-lg hover:opacity-90 active:scale-95 transition-all"
-            >
-              <div>More than 5 Players</div>
-              <div className="text-xs font-normal mt-1 opacity-90">iOS will collect in 2 rounds</div>
-            </button>
+                <button
+                  onClick={() => {
+                    setPlayerCount(10);
+                    startCollection();
+                  }}
+                  className="w-full py-8 px-6 rounded-xl font-bold text-xl bg-primary text-white shadow-lg hover:opacity-90 active:scale-95 transition-all"
+                >
+                  <div>More than 5 Players</div>
+                  <div className="text-xs font-normal mt-1 opacity-90">iOS will collect in 2 rounds</div>
+                </button>
+              </>
+            ) : (
+              <button
+                onClick={() => {
+                  setPlayerCount(10);
+                  startCollection();
+                }}
+                className="w-full py-8 px-6 rounded-xl font-bold text-xl bg-primary text-white shadow-lg hover:opacity-90 active:scale-95 transition-all"
+              >
+                Start
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -124,7 +138,7 @@ export function TurnOrder() {
 
   // Collection View
   return (
-    <div className="relative w-full min-h-[calc(100vh-8rem)] overflow-hidden bg-background pb-24">
+    <div className="relative w-full h-[calc(100vh-8rem)] overflow-hidden bg-background">
       {/* Instructions */}
       <div className="absolute top-6 left-0 right-0 text-center z-30 pointer-events-none">
         <AnimatePresence mode="wait">

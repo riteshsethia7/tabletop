@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import type { Touch } from '../types';
+import { isIOS } from '../utils/platform';
 
 // Colorblind-safe color palette
 const TOUCH_COLORS = [
@@ -187,7 +188,8 @@ export function useTouchDetection(options: UseTouchDetectionOptions = {}) {
       // Ignore spurious touchend events from Safari (happens when exceeding 5 touches)
       // If we have existing touches and get touchend with 0 remaining within 1s,
       // it's Safari's forced reset when exceeding 5 touches - ignore it
-      if (e.touches.length === 0 && activePointersRef.current.size > 0 && timeSinceLastTouch < 1000) {
+      // Only apply this workaround on iOS - on Android it causes ghost touches
+      if (isIOS() && e.touches.length === 0 && activePointersRef.current.size > 0 && timeSinceLastTouch < 1000) {
         console.log('[TouchDetection] Ignoring spurious touchend event (Safari 5-touch limit) - keeping existing touches');
         return; // Keep existing touches, ignore Safari's forced reset
       }
