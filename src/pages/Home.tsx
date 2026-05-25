@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Dices,
@@ -9,6 +10,7 @@ import {
   Gamepad2,
   ArrowDownUp,
   Gauge,
+  Download,
 } from 'lucide-react';
 
 const features = [
@@ -24,6 +26,36 @@ const features = [
 ];
 
 export function Home() {
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [showInstallButton, setShowInstallButton] = useState(false);
+
+  useEffect(() => {
+    const handler = (e: Event) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+      setShowInstallButton(true);
+    };
+
+    window.addEventListener('beforeinstallprompt', handler);
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handler);
+    };
+  }, []);
+
+  const handleInstallClick = async () => {
+    if (!deferredPrompt) return;
+
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+
+    if (outcome === 'accepted') {
+      setShowInstallButton(false);
+    }
+
+    setDeferredPrompt(null);
+  };
+
   return (
     <div className="container mx-auto px-4 py-6">
       <div className="mb-8">
@@ -31,6 +63,15 @@ export function Home() {
         <p className="text-text-secondary">
           Your offline board game companion. Choose a feature to get started!
         </p>
+        {showInstallButton && (
+          <button
+            onClick={handleInstallClick}
+            className="mt-3 inline-flex items-center gap-2 text-primary hover:underline text-sm font-medium"
+          >
+            <Download className="w-4 h-4" />
+            Add PlayFlow to home screen
+          </button>
+        )}
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
