@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { Header } from './Header';
 import { AdBanner } from './AdBanner';
 
 interface AppShellProps {
@@ -8,6 +9,7 @@ interface AppShellProps {
 export function AppShell({ children }: AppShellProps) {
   return (
     <div className="flex flex-col min-h-screen bg-background">
+      <Header />
       <main className="flex-1 overflow-y-auto pb-[66px]">
         {children}
       </main>
