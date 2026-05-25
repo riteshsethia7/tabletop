@@ -1,18 +1,35 @@
-import { useState } from 'react';
+import { useEffect, useRef } from 'react';
+
+declare global {
+  interface Window {
+    adsbygoogle: any[];
+  }
+}
 
 export function AdBanner() {
-  const [adContent] = useState<string | null>(null);
+  const adRef = useRef<HTMLModElement>(null);
 
-  // Future: Load ad from network
-  // For now: always null
-
-  if (!adContent) return null; // NO space reserved
+  useEffect(() => {
+    try {
+      // Push ad to Google AdSense
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
+    } catch (error) {
+      console.error('AdSense error:', error);
+    }
+  }, []);
 
   return (
-    <div className="w-full bg-gray-100 dark:bg-gray-800">
-      <div className="max-w-screen-sm mx-auto h-[50px] md:h-[90px] flex items-center justify-center">
-        {/* Ad content will go here */}
-        <div className="text-text-secondary text-sm">Advertisement</div>
+    <div className="fixed bottom-0 left-0 right-0 bg-background border-t border-border z-40">
+      <div className="max-w-screen-lg mx-auto">
+        <ins
+          ref={adRef}
+          className="adsbygoogle"
+          style={{ display: 'block' }}
+          data-ad-client="ca-pub-7578637774996217"
+          data-ad-slot="1422171146"
+          data-ad-format="auto"
+          data-full-width-responsive="true"
+        />
       </div>
     </div>
   );
