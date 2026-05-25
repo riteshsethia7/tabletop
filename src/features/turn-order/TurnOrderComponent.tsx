@@ -14,14 +14,14 @@ export function TurnOrder() {
   const { order, reset: resetStore } = useTurnOrderStore();
   const deviceIsIOS = isIOS();
 
-  // iOS multi-round state
-  const [view, setView] = useState<'setup' | 'collect'>('setup');
-  const [playerCount, setPlayerCount] = useState(2);
+  // iOS multi-round state — Android skips setup and goes straight to collect
+  const [view, setView] = useState<'setup' | 'collect'>(deviceIsIOS ? 'setup' : 'collect');
+  const [playerCount, setPlayerCount] = useState(deviceIsIOS ? 2 : 10);
   const [round1Touches, setRound1Touches] = useState<Touch[]>([]);
   const [currentRound, setCurrentRound] = useState(1);
 
   const needsMultiRound = deviceIsIOS && playerCount > IOS_MAX_TOUCHES;
-  const round1Count = Math.min(playerCount, IOS_MAX_TOUCHES);
+  const round1Count = deviceIsIOS ? Math.min(playerCount, IOS_MAX_TOUCHES) : playerCount;
   const round2Count = playerCount - round1Count;
   const totalRounds = needsMultiRound ? 2 : 1;
   const hasOrder = order.length > 0;
@@ -71,8 +71,14 @@ export function TurnOrder() {
 
   const reset = () => {
     resetStore();
-    setView('setup');
-    setPlayerCount(2);
+    if (deviceIsIOS) {
+      setView('setup');
+      setPlayerCount(2);
+    } else {
+      // Android: stay in collect view, just reset detection
+      setView('collect');
+      setPlayerCount(10);
+    }
     setRound1Touches([]);
     setCurrentRound(1);
     round1Detection.reset();

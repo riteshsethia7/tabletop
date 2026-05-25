@@ -22,7 +22,7 @@ export function TeamBuilder() {
   const [currentRound, setCurrentRound] = useState(1);
 
   const needsMultiRound = deviceIsIOS && playerCount > IOS_MAX_TOUCHES;
-  const round1Count = Math.min(playerCount, IOS_MAX_TOUCHES);
+  const round1Count = deviceIsIOS ? Math.min(playerCount, IOS_MAX_TOUCHES) : playerCount;
   const round2Count = playerCount - round1Count;
   const totalRounds = needsMultiRound ? 2 : 1;
   const hasTeams = teams.length > 0;
