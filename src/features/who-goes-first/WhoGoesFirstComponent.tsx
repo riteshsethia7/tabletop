@@ -5,7 +5,6 @@ import { useTouchDetection } from '../../hooks/useTouchDetection';
 import { useWhoGoesFirstStore } from '../../stores/whoGoesFirstStore';
 import { TouchCircle } from '../../components/ui/TouchCircle';
 import { isIOS } from '../../utils/platform';
-import { getRangeStyle } from '../../utils/rangeInput';
 import type { Touch } from '../../types';
 
 const IOS_MAX_TOUCHES = 5;
