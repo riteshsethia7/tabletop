@@ -114,11 +114,6 @@ function WhoGoesFirstIOS() {
               <div>More than 5 Players</div>
               <div className="text-xs font-normal mt-1 opacity-90">iOS will collect in 2 rounds</div>
             </button>
-
-            <div className="mt-6 text-center text-sm text-text-secondary">
-              <p>Place all fingers on screen at once</p>
-              <p className="mt-1">iOS will collect in 2 rounds if needed</p>
-            </div>
           </div>
         </div>
       </div>
