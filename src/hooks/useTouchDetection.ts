@@ -119,7 +119,7 @@ export function useTouchDetection(options: UseTouchDetectionOptions = {}) {
           id: nativeTouch.identifier,
           x: nativeTouch.clientX,
           y: nativeTouch.clientY,
-          color: existingTouch?.color || TOUCH_COLORS[(colorOffset + newTouchMap.size) % TOUCH_COLORS.length],
+          color: existingTouch?.color || TOUCH_COLORS[(colorOffset + i) % TOUCH_COLORS.length],
         };
 
         newTouchMap.set(nativeTouch.identifier, touch);
