@@ -6,7 +6,7 @@ const TIMER_ID = 'current-timer';
 
 interface TimerStoreState extends TimerState {
   timerSnapshots: PlayerTimer[][];
-  setup: (players: number, timePerPlayer: number, autoAdvance: boolean) => Promise<void>;
+  setup: (players: number, timePerPlayer: number) => Promise<void>;
   switchToPlayer: (playerId: number) => void;
   togglePause: () => void;
   reset: () => void;
@@ -28,7 +28,7 @@ export const useTimerStore = create<TimerStoreState>((set, get) => ({
   startTime: null,
   timerSnapshots: [],
 
-  setup: async (players, timePerPlayer, autoAdvance) => {
+  setup: async (players, timePerPlayer) => {
     const timers: PlayerTimer[] = Array.from({ length: players }, (_, i) => ({
       playerId: i,
       timeRemaining: timePerPlayer * 60 * 1000, // Convert minutes to ms
@@ -42,7 +42,7 @@ export const useTimerStore = create<TimerStoreState>((set, get) => ({
       activePlayer: 0,
       timers,
       isPaused: false,
-      autoAdvance,
+      autoAdvance: false,
       history: [],
       startTime: performance.now(),
     };
@@ -93,10 +93,10 @@ export const useTimerStore = create<TimerStoreState>((set, get) => ({
   },
 
   reset: () => {
-    const { players, timePerPlayer, autoAdvance } = get();
+    const { players, timePerPlayer } = get();
     if (players === 0) return;
 
-    get().setup(players, timePerPlayer, autoAdvance);
+    get().setup(players, timePerPlayer);
   },
 
   undo: () => {
@@ -119,20 +119,13 @@ export const useTimerStore = create<TimerStoreState>((set, get) => ({
   },
 
   updateTimer: (playerId, timeRemaining) => {
-    const { timers, autoAdvance } = get();
+    const { timers } = get();
 
     const updatedTimers = timers.map((timer) =>
       timer.playerId === playerId ? { ...timer, timeRemaining } : timer
     );
 
     set({ timers: updatedTimers });
-
-    // Auto-advance if time runs out
-    if (timeRemaining <= 0 && autoAdvance) {
-      const nextPlayer = (playerId + 1) % timers.length;
-      setTimeout(() => get().switchToPlayer(nextPlayer), 500);
-    }
-
     saveTimer({ ...get(), timers: updatedTimers });
   },
 

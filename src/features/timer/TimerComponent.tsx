@@ -20,7 +20,6 @@ export function Timer() {
     activePlayer,
     timers,
     isPaused,
-    autoAdvance,
     timerSnapshots,
     setup,
     switchToPlayer,
@@ -34,7 +33,6 @@ export function Timer() {
   const [view, setView] = useState<'setup' | 'timer'>('setup');
   const [setupPlayers, setSetupPlayers] = useState(2);
   const [setupTime, setSetupTime] = useState(10);
-  const [setupAutoAdvance, setSetupAutoAdvance] = useState(false);
 
   // Keep screen awake during timer
   useWakeLock(view === 'timer');
@@ -91,7 +89,7 @@ export function Timer() {
   }, [isPaused, activePlayer, updateTimer]);
 
   const handleSetup = async () => {
-    await setup(setupPlayers, setupTime, setupAutoAdvance);
+    await setup(setupPlayers, setupTime);
     setView('timer');
   };
 
@@ -144,27 +142,6 @@ export function Timer() {
               <span>1 min</span>
               <span>60 min</span>
             </div>
-          </div>
-
-          <div className="flex items-center justify-between p-4 bg-surface rounded-lg">
-            <div>
-              <p className="font-medium">Auto Advance</p>
-              <p className="text-sm text-text-secondary">
-                Auto-switch when time runs out
-              </p>
-            </div>
-            <button
-              onClick={() => setSetupAutoAdvance(!setupAutoAdvance)}
-              className={`w-14 h-8 rounded-full transition-colors ${
-                setupAutoAdvance ? 'bg-primary' : 'bg-border'
-              }`}
-            >
-              <div
-                className={`w-6 h-6 rounded-full bg-white transition-transform ${
-                  setupAutoAdvance ? 'translate-x-7' : 'translate-x-1'
-                }`}
-              />
-            </button>
           </div>
 
           <button
@@ -276,7 +253,6 @@ export function Timer() {
         {/* Info */}
         <div className="mt-6 text-center text-sm text-text-secondary">
           <p>Tap a player's clock to switch to them</p>
-          {autoAdvance && <p className="mt-1">Auto-advance enabled</p>}
         </div>
       </div>
     </div>
