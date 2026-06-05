@@ -14,7 +14,13 @@ import {
   Share,
   X,
   MoreVertical,
+  Wifi,
+  Shield,
+  Zap,
 } from 'lucide-react';
+import { useSEO } from '../hooks/useSEO';
+import { SEO_DATA } from '../utils/seo';
+import { generateOrganizationSchema } from '../utils/structuredData';
 
 const features = [
   { to: '/who-goes-first', icon: Gamepad2, label: 'Who Goes First', color: 'bg-blue-500' },
@@ -29,6 +35,14 @@ const features = [
 ];
 
 export function Home() {
+  const seo = useSEO({
+    title: SEO_DATA.home.title,
+    description: SEO_DATA.home.description,
+    keywords: SEO_DATA.home.keywords,
+    canonicalPath: '/',
+    structuredData: generateOrganizationSchema(),
+  });
+
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [showInstallButton, setShowInstallButton] = useState(false);
   const [isStandalone, setIsStandalone] = useState(false);
@@ -112,10 +126,14 @@ export function Home() {
 
   return (
     <div className="container mx-auto px-4 py-6">
+      {seo}
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">Welcome to PlayFlow</h1>
-        <p className="text-text-secondary">
+        <p className="text-text-secondary mb-3">
           Your offline board game companion. Choose a feature to get started!
+        </p>
+        <p className="text-text-secondary leading-relaxed">
+          PlayFlow is a free Progressive Web App designed to enhance your tabletop gaming experience with nine essential tools. Whether you're hosting a casual game night, running a competitive tournament, or embarking on an RPG campaign, PlayFlow provides everything you need in one convenient, offline-first application. No account required, no data collection - just pure gaming utility that works anywhere, anytime.
         </p>
         {isStandalone ? (
           <p className="mt-3 inline-flex items-center gap-2 text-green-600 text-sm font-medium">
@@ -151,7 +169,7 @@ export function Home() {
         )}
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-12">
         {features.map(({ to, icon: Icon, label, color }) => (
           <Link
             key={to}
@@ -164,6 +182,79 @@ export function Home() {
             <span className="text-center text-sm font-medium">{label}</span>
           </Link>
         ))}
+      </div>
+
+      {/* Why PlayFlow Section */}
+      <div className="mb-12 bg-surface rounded-xl border border-border p-8">
+        <h2 className="text-2xl font-bold mb-6 text-center">Why PlayFlow?</h2>
+        <div className="grid md:grid-cols-3 gap-6">
+          <div className="text-center">
+            <div className="inline-block bg-primary/10 p-4 rounded-full mb-3">
+              <Wifi className="w-8 h-8 text-primary" />
+            </div>
+            <h3 className="font-semibold mb-2">Works Offline</h3>
+            <p className="text-sm text-text-secondary">
+              True offline functionality means you can use PlayFlow anywhere - on planes, camping trips, or places without WiFi. All features work perfectly without internet.
+            </p>
+          </div>
+          <div className="text-center">
+            <div className="inline-block bg-primary/10 p-4 rounded-full mb-3">
+              <Shield className="w-8 h-8 text-primary" />
+            </div>
+            <h3 className="font-semibold mb-2">Privacy First</h3>
+            <p className="text-sm text-text-secondary">
+              No accounts, no servers, no data collection. Everything stays on your device. We respect your privacy and don't track what games you play or how you use the app.
+            </p>
+          </div>
+          <div className="text-center">
+            <div className="inline-block bg-primary/10 p-4 rounded-full mb-3">
+              <Zap className="w-8 h-8 text-primary" />
+            </div>
+            <h3 className="font-semibold mb-2">Lightning Fast</h3>
+            <p className="text-sm text-text-secondary">
+              Optimized performance with instant loading and smooth interactions. No waiting for servers, no lag - just responsive tools when you need them most.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Use Cases Section */}
+      <div className="mb-12">
+        <h2 className="text-2xl font-bold mb-6 text-center">Perfect For Every Gaming Occasion</h2>
+        <div className="grid md:grid-cols-3 gap-4">
+          <div className="bg-surface rounded-lg border border-border p-6">
+            <h3 className="font-bold text-lg mb-2">Game Nights</h3>
+            <p className="text-sm text-text-secondary">
+              Host memorable board game nights with friends and family. From casual party games to intense strategy sessions, PlayFlow keeps everything organized and fair.
+            </p>
+          </div>
+          <div className="bg-surface rounded-lg border border-border p-6">
+            <h3 className="font-bold text-lg mb-2">Tournaments</h3>
+            <p className="text-sm text-text-secondary">
+              Run professional-quality tournaments with Arena Mode's leaderboards and match tracking. Perfect for competitive gaming communities and local game shops.
+            </p>
+          </div>
+          <div className="bg-surface rounded-lg border border-border p-6">
+            <h3 className="font-bold text-lg mb-2">RPG Sessions</h3>
+            <p className="text-sm text-text-secondary">
+              Dungeon Masters and players love our dice roller, turn tracker, and timer. Everything you need for smooth D&D, Pathfinder, or any tabletop RPG campaign.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* CTA to About Page */}
+      <div className="mb-12 text-center bg-primary/10 rounded-xl p-8 border-2 border-primary/20">
+        <h2 className="text-2xl font-bold mb-3">Want to Learn More?</h2>
+        <p className="text-text-secondary mb-6">
+          Discover detailed descriptions of all nine features, installation guides, and how PlayFlow can transform your gaming experience.
+        </p>
+        <Link
+          to="/about"
+          className="inline-block bg-primary text-white px-8 py-3 rounded-lg font-semibold hover:opacity-90 transition-all active:scale-95"
+        >
+          About PlayFlow
+        </Link>
       </div>
 
       {/* Safari Install Instructions Modal */}

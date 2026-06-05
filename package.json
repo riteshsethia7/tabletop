@@ -11,14 +11,15 @@
     "test": "vitest"
   },
   "dependencies": {
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-router-dom": "^6.28.0",
-    "zustand": "^5.0.2",
     "dexie": "^4.0.10",
     "dexie-react-hooks": "^1.1.7",
     "framer-motion": "^11.15.0",
-    "lucide-react": "^0.469.0"
+    "lucide-react": "^0.469.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-helmet-async": "^3.0.0",
+    "react-router-dom": "^6.28.0",
+    "zustand": "^5.0.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",

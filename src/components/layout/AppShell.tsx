@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Settings } from 'lucide-react';
 import { AdBanner } from './AdBanner';
+import { Footer } from './Footer';
 
 interface AppShellProps {
   children: ReactNode;
@@ -23,6 +24,7 @@ export function AppShell({ children }: AppShellProps) {
         {children}
       </main>
       <AdBanner />
+      <Footer />
 
       {/* Floating Settings Button */}
       {!hideSettingsButton && (

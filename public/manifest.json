@@ -1,7 +1,7 @@
 {
   "name": "PlayFlow - Board Game Companion",
   "short_name": "PlayFlow",
-  "description": "Offline mobile companion app for board game players",
+  "description": "Free offline board game companion with 9 essential tools for game nights: dice roller (D2-D100), score tracker with multi-round support, team builder with auto-balancing, multi-player timer, turn order tracker, arena tournament mode, customizable spin wheel, coin flip, and who goes first selector. Perfect for tabletop gaming, RPGs, and competitive play. Works completely offline as a PWA with no account required. Install on your phone or tablet for instant access to all your game night essentials.",
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait",
